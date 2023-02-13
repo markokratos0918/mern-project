@@ -11,7 +11,6 @@ export default function Post() {
       <time>2023-02-10 14:45</time>
     </p>
     <p className="summary">That doesn’t look safe.” The statement would follow me for days. Every time I mentioned I was test driving Arcimoto’s Fun Utility Vehicle — an open air, all-electric three-wheeler — a friend or co-worker would pipe up to state, what to them, seemed like the obvious.
-      After all, most cars have four wheels, not three. They also tend to have doors and airbags too. 
     </p>
     </div>
   </div>   
