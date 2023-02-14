@@ -2,10 +2,10 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require("mongoose");
 mongoose.set('strictQuery', true);
+const User = require('./models/User')
 const app = express();
 
 app.use(cors());
-//json parser//
 app.use(express.json()); 
 
 mongoose.connect('mongodb+srv://markde:0GZr06eFjtlOLMrn@cluster0.6f3vbcy.mongodb.net/?retryWrites=true&w=majority');
