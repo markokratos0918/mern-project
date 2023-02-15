@@ -1,11 +1,11 @@
-import { useState } from "react";
+import {useState} from "react";
 
 export default function LoginPage() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    async function register(ev) {
+    async function login(ev) {
         ev.preventDefault();
-        fetch('http://localhost:4000/register', {
+        await fetch('http://localhost:4000/login', {
             method: 'POST',
             body: JSON.stringify({username,password}),
             headers: {'Content-Type':'application/json'},
@@ -13,7 +13,7 @@ export default function LoginPage() {
 }  
 
     return(
-        <form className="login">
+        <form className="login" onSubmit={login}>
             <h1>Login</h1>
             <input type="text"
                placeholder="username"
