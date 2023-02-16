@@ -10,11 +10,13 @@ const jwt = require('jsonwebtoken');
 const salt = bcrypt.genSaltSync(10);
 const secret = 'asdfee123123434678090ouojljl';
 
-app.use(cors());
+// cors set credential to true and define origin
+app.use(cors{credentials:true,origin:'http://localhost:3000/'});
 app.use(express.json()); 
 
 mongoose.connect('mongodb+srv://markde:0GZr06eFjtlOLMrn@cluster0.6f3vbcy.mongodb.net/?retryWrites=true&w=majority');
 
+// registering user
 app.post('/register', async (req,res) => {
     const {username,password} = req.body;
     try{
@@ -28,11 +30,13 @@ app.post('/register', async (req,res) => {
     }
 });
 
+// login for user
 app.post('/login', async (req,res) => {
     const {username,password} = req.body;
     const userDoc = await User.findOne({username});
     const passOK = bcrypt.compareSync(password, userDoc.password);
     if (passOK) {
+        // logged in
           jwt.sign({username,id:userDoc._id}, secret, {}, (err,token) => {
           if (err) throw err;
           res.cookie('token', token).json('ok');
