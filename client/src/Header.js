@@ -1,5 +1,5 @@
 import {Link} from "react-router-dom";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 
 
 export default function Header() {
@@ -7,23 +7,30 @@ export default function Header() {
   useEffect (() => {
     fetch('http://localhost:4000/profile', {
       credentials: 'include',
-    }).then(response =>{
+    }).then(response => {
       response.json().then(userInfo => {
         setUsername(userInfo.username);
       });
     });
   }, []);
   
-
+function logout() {
+  fetch('http://localhost:4000/logout', {
+    credentials: 'include',
+    method: 'POST',
+  });
+  setUsername(null);
+}
     return (
         <header>
-          <Link to="" className="logo">FarmKnowledge</Link>
+          <Link to="/" className="logo">FarmKnowledge</Link>
           <nav>
-            {username && {
+            {username && (
               <>
               <Link to="/create">Create new post</Link>
+              <a onClick={logout}>Logout</a>
               </>
-            }}
+            )}
             {!username && (
               <>
               <Link to="/login">Login</Link>
