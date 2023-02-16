@@ -12,7 +12,7 @@ export default function LoginPage() {
             method: 'POST',
             body: JSON.stringify({username,password}),
             headers: {'Content-Type':'application/json'},
-            // save cookie on app so cookie can be considered credentials
+
             credentials: 'include',
     });
     if (response.ok) {
