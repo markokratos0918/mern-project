@@ -6,13 +6,16 @@ const User = require('./models/User')
 const bcrypt = require('bcryptjs');
 const app = express();
 const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser');
+
 
 const salt = bcrypt.genSaltSync(10);
 const secret = 'asdfee123123434678090ouojljl';
 
 // cors set credential to true and define origin
-app.use(cors{credentials:true,origin:'http://localhost:3000/'});
+app.use(cors({credentials:true,origin:'http://localhost:3000'}));
 app.use(express.json()); 
+app.use(cookieParser());
 
 mongoose.connect('mongodb+srv://markde:0GZr06eFjtlOLMrn@cluster0.6f3vbcy.mongodb.net/?retryWrites=true&w=majority');
 
@@ -44,7 +47,10 @@ app.post('/login', async (req,res) => {
      } else {
         res.status(400).json('wrong credentials');
     }
+});
 
+app.get('/profile', (req,res) => {
+    res.json(req.cookies);
 });
 
 // default port for express
