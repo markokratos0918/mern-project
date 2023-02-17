@@ -7,6 +7,8 @@ const bcrypt = require('bcryptjs');
 const app = express();
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
+const multer = require('multer');
+const uploadMidleware = multer({ dest: 'uploads/' })
 
 
 const salt = bcrypt.genSaltSync(10);
@@ -62,6 +64,13 @@ app.get('/profile', (req,res) => {
 
 app.post('/logout', (req,res) => {
     res.cookie('token', '').json('ok');
+});
+
+app.post('/post', uploadMidleware.single('file'), (req,res) => {
+    const {originalname} = req.file;
+    const parts = originalname.split('.');
+    const ext = parts[parts.lenght -1];
+    res.json({files:req.file});
 });
 
 // default port for express
