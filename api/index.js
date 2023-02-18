@@ -2,7 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require("mongoose"); //bridge to mongodb//
 mongoose.set('strictQuery', true);
-const User = require('./models/User')
+const User = require('./models/User');
+const Post = require('./models/Post');
 const bcrypt = require('bcryptjs'); //encryp password//
 const app = express();
 const jwt = require('jsonwebtoken');
@@ -68,13 +69,20 @@ app.post('/logout', (req,res) => {
 });
 
 //create post//
-app.post('/post', uploadMidleware.single('file'), (req,res) => { 
+app.post('/post', uploadMidleware.single('file'), async (req,res) => { 
     const {originalname,path} = req.file; //grab file//
     const parts = originalname.split('.'); //capture end of file name//
     const ext = parts[parts.length -1]; 
     const newPath = path+'.'+ext
     fs.renameSync(path, newPath); //rename file upload + extension//
-    res.json({ext});
+    const {title,summary,content} = req.body;
+    const postDoc = await Post.create({  //return post from database//
+        title,
+        summary,
+        content,
+        cover:newPath,
+    });
+    res.json(postDoc);
 });
 
 // default port for express
