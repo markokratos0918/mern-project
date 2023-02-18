@@ -72,7 +72,8 @@ app.post('/post', uploadMidleware.single('file'), (req,res) => {
     const {originalname,path} = req.file; //grab file//
     const parts = originalname.split('.'); //capture end of file name//
     const ext = parts[parts.length -1]; 
-    fs.renameSync(path, path+'.'+ext); //rename file upload + extension//
+    const newPath = path+'.'+ext
+    fs.renameSync(path, newPath); //rename file upload + extension//
     res.json({ext});
 });
 
