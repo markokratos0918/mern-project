@@ -75,6 +75,7 @@ app.post('/post', uploadMidleware.single('file'), async (req,res) => {
     const ext = parts[parts.length -1]; 
     const newPath = path+'.'+ext
     fs.renameSync(path, newPath); //rename file upload + extension//
+
     const {title,summary,content} = req.body;
     const postDoc = await Post.create({  //return post from database//
         title,
@@ -83,6 +84,11 @@ app.post('/post', uploadMidleware.single('file'), async (req,res) => {
         cover:newPath,
     });
     res.json(postDoc);
+});
+
+//add new post to home page//
+app.get('/post', async (req,res) => {
+    res.json(await Post.find());
 });
 
 // default port for express
