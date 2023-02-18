@@ -76,19 +76,25 @@ app.post('/post', uploadMidleware.single('file'), async (req,res) => {
     const newPath = path+'.'+ext
     fs.renameSync(path, newPath); //rename file upload + extension//
 
-    const {title,summary,content} = req.body;
-    const postDoc = await Post.create({  //return post from database//
+    const {token} = req.cookies;
+    jwt.verify(token, secret, {}, async (err, info)=> {
+        if (err) throw err;
+        const {title,summary,content} = req.body;
+        const postDoc = await Post.create({  //return post from database//
         title,
         summary,
         content,
         cover:newPath,
+        author:info.id //grab author name from jwt//
     });
     res.json(postDoc);
-});
+  });
+});  
+
 
 //add new post to home page//
 app.get('/post', async (req,res) => {
-    res.json(await Post.find());
+    res.json(await Post.find().populate('author', ['username'])); //show author name only//
 });
 
 // default port for express
