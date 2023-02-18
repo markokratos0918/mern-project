@@ -19,6 +19,7 @@ const secret = 'asdfee123123434678090ouojljl';
 app.use(cors({credentials:true,origin:'http://localhost:3000'}));
 app.use(express.json()); 
 app.use(cookieParser());
+app.use('/uploads', express.static(__dirname + '/uploads')); //save static files to upload//
 
 mongoose.connect('mongodb+srv://markde:0GZr06eFjtlOLMrn@cluster0.6f3vbcy.mongodb.net/?retryWrites=true&w=majority');//key connecting to db//
 
@@ -94,7 +95,11 @@ app.post('/post', uploadMidleware.single('file'), async (req,res) => {
 
 //add new post to home page//
 app.get('/post', async (req,res) => {
-    res.json(await Post.find().populate('author', ['username'])); //show author name only//
+    res.json(await Post.find()
+    .populate('author', ['username'])
+    .sort({createdAt: -1}) //recent post on top//
+    .limit(20)  ///limit to 20 post only//
+    ); //show author name only//
 });
 
 // default port for express
