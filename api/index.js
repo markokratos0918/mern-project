@@ -102,7 +102,33 @@ app.put('/post', uploadMidleware.single('file'), async (req,res) => {
       fs.renameSync(path, newPath);
 
     }
-    
+    const {token} = req.cookies;
+    jwt.verify(token, secret, {}, async (err, info)=> {
+        if (err) throw err;
+        const {id,title,summary,content} = req.body;
+        const postDoc = await Post.findById(id);
+        const isAuthor = JSON.stringify(postDoc.author) === JSON.stringify(info.id);
+        res.json ({isAuthor,postDoc,info});
+        if (!isAuthor) {
+            return res.status(400).json('you are not the author');
+          }
+        await postDoc.update({
+            title,
+            summary,
+            content,
+            cover: newPath ? newPath : postDoc.cover,
+          });  
+
+    //     const {title,summary,content} = req.body;
+    //     const postDoc = await Post.create({  //return post from database//
+    //     title,
+    //     summary,
+    //     content,
+    //     cover:newPath,
+    //     author:info.id //grab author name from jwt//
+    // });
+    // res.json(postDoc);
+  });    
 });
 
 
