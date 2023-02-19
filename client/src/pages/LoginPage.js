@@ -18,7 +18,6 @@ export default function LoginPage() {
     });
     if (response.ok) {
         response.json().then(userInfo => {
-
             setUserInfo(userInfo);
             setRedirect(true);
         });
