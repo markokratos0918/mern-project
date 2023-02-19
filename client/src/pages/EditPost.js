@@ -8,11 +8,11 @@ export default function EditPost() {
     const [summary,setSummary] = useState('');
     const [content,setContent] = useState('');
     const [files, setFiles] = useState('');
+    const [cover, setCover] = useState('');
     const [redirect,setRedirect] = useState(false);
 
     useEffect(() => {
-        fetch('http://localhost:4000/post/'+id)
-        .then(response => {
+        fetch('http://localhost:4000/post/'+id).then(response => {
            response.json()
            .then(postInfo => {
             setTitle(postInfo.title);
@@ -28,6 +28,7 @@ export default function EditPost() {
         data.set('title', title);
         data.set('summary', summary);
         data.set('content', content);
+        data.set('id', id);
         if (files?.[0]) {
             data.set('file', files?.[0]);        
         }        
@@ -35,10 +36,12 @@ export default function EditPost() {
             method: 'PUT',
             body: data,
             credentials: 'include',
+            
         });
         if (response.ok) {
-        setRedirect(true);
+        //        setRedirect(true);   
     }
+
 }   
 
     if (redirect) {

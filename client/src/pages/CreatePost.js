@@ -5,14 +5,6 @@ import { useState } from "react";
 import { Navigate } from "react-router-dom";
 import Editor from "../Editor";
 
-const formats = [
-    'header',
-    'bold', 'italic', 'underline', 'strike', 'blockquote',
-    'list', 'bullet', 'indent',
-    'link', 'image'
-  ];
-
-
 export default function CreatePost() {
     const [title,setTitle] = useState('');
     const [summary,setSummary] = useState('');
@@ -54,7 +46,7 @@ export default function CreatePost() {
             <input type="file" 
             onChange={ev => setFiles(ev.target.files)} />
             onChange={ev => setFiles(ev.target.files)} />
-            <Editor onChange={content} value={setContent} />
+            <Editor value={content} onChange={setContent} />
             <button style={{marginTop:'5px'}}>Create Your Post</button>
         </form>
     );
